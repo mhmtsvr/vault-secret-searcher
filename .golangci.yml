@@ -1,0 +1,104 @@
+version: "2"
+issues:
+  # Make sure all the errors are getting returned.
+  max-same-issues: 0
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+
+linters:
+  settings:
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: gotest.tools/assert
+              desc: use gotest.tools/v3/assert instead
+
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+
+    errorlint:
+      errorf: true
+      asserts: true
+      comparison: true
+
+  exclusions:
+    generated: lax
+
+    rules:
+        # We're fine shadowing err since it's the standard way to name
+        # returned errors
+      - linters: [govet]
+        text: 'shadow: declaration of "err"'
+
+        # We're fine shadowing ctx since it's the standard way to name
+        # the context
+      - linters: [govet]
+        text: 'shadow: declaration of "ctx"'
+
+        # We don't require comments on everything in services
+      - linters: [revive]
+        text: 'exported: exported (type|method|function|var) (.+) should have comment or be unexported'
+
+        # We don't require comments on package level
+      - linters: [revive]
+        text: 'package-comments: should have a package comment'
+
+        # We don't require package docs
+      - linters: [staticcheck]
+        text: ST1000
+
+        # we remove a few annoying things from our tests, because they
+        # don't provide much beside complexity
+      - path: _test\.go
+        linters:
+          - errcheck
+          - funlen
+          - goconst
+          - gosec
+          - govet
+          - unparam
+
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+
+  default: none
+  enable:
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - depguard
+    - errcheck
+    - errorlint
+    - exhaustive
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gocyclo
+    - gosec
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    - prealloc
+    - predeclared
+    - revive
+    - staticcheck
+    - tparallel
+    - unconvert
+    - unparam
+    - unused
