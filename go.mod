@@ -4,7 +4,7 @@ go 1.26.3
 
 require (
 	github.com/alecthomas/kong v1.15.0
-	github.com/charmbracelet/log v0.4.2
+	github.com/charmbracelet/log/v2 v2.0.0
 )
 
 require (
